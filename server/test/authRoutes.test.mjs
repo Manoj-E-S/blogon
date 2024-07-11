@@ -1,10 +1,11 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const app = require('../server');
-const { User } = require('../database/schema');
+import chai, { use, request } from 'chai';
+import chaiHttp from 'chai-http';
+import app from '../server.js';
+import db from '../database/dbSetup.js';
+import { User } from '../database/schema.js';
 const { expect } = chai;
 
-chai.use(chaiHttp);
+use(chaiHttp);
 
 describe('Auth Routes', () => {
   before(async () => {
@@ -14,7 +15,7 @@ describe('Auth Routes', () => {
   let token;
 
   it('should register a new user', (done) => {
-    chai.request(app)
+    request(app)
       .post('/register')
       .field('username', 'testuser')
       .field('email', 'testuser@example.com')
@@ -29,7 +30,7 @@ describe('Auth Routes', () => {
   });
 
   it('should not register a user with existing email', (done) => {
-    chai.request(app)
+    request(app)
       .post('/register')
       .send({
         username: 'testuser2',
@@ -44,7 +45,7 @@ describe('Auth Routes', () => {
   });
 
   it('should login an existing user', (done) => {
-    chai.request(app)
+    request(app)
       .post('/login')
       .send({
         email: 'testuser@example.com',
@@ -59,7 +60,7 @@ describe('Auth Routes', () => {
   });
 
   it('should not login with incorrect email', (done) => {
-    chai.request(app)
+    request(app)
       .post('/login')
       .send({
         email: 'wrongemail@example.com',
@@ -73,7 +74,7 @@ describe('Auth Routes', () => {
   });
 
   it('should not login with incorrect password', (done) => {
-    chai.request(app)
+    request(app)
       .post('/login')
       .send({
         email: 'testuser@example.com',
@@ -87,7 +88,7 @@ describe('Auth Routes', () => {
   });
 
   it('should logout a logged-in user', (done) => {
-    chai.request(app)
+    request(app)
       .get('/logout')
       .set('Authorization', `Bearer ${token}`)
       .end((err, res) => {

@@ -1,10 +1,11 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const app = require('../server');
-const { Category, Blog, User } = require('../database/schema');
+import { use, request } from 'chai';
+import chaiHttp from 'chai-http';
+import app from '../server.js';
+import db from '../database/dbSetup.js';
+import { Category, Blog, User } from '../database/schema.js';
 const { expect } = chai;
 
-chai.use(chaiHttp);
+use(chaiHttp);
 
 describe('Category Routes', () => {
   let token;
@@ -15,7 +16,7 @@ describe('Category Routes', () => {
     await Blog.deleteMany({});
     await User.deleteMany({});
 
-    const res = await chai.request(app)
+    const res = await request(app)
       .post('/register')
       .send({
         username: 'testuser',
@@ -27,7 +28,7 @@ describe('Category Routes', () => {
   });
 
   it('should create a new category', (done) => {
-    chai.request(app)
+    request(app)
       .post('/categories')
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -43,7 +44,7 @@ describe('Category Routes', () => {
   });
 
   it('should fetch all categories', (done) => {
-    chai.request(app)
+    request(app)
       .get('/categories')
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -53,7 +54,7 @@ describe('Category Routes', () => {
   });
 
   it('should fetch all blogs for a specific category', (done) => {
-    chai.request(app)
+    request(app)
       .post('/blogs')
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -63,7 +64,7 @@ describe('Category Routes', () => {
         category: categoryId
       })
       .end((err, res) => {
-        chai.request(app)
+        request(app)
           .get(`/categories/${categoryId}/posts`)
           .end((err, res) => {
             expect(res).to.have.status(200);

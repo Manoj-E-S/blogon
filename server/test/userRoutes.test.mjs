@@ -1,10 +1,11 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const app = require('../server');
-const { User } = require('../database/schema');
+import { use, request } from 'chai';
+import chaiHttp from 'chai-http';
+import app from '../server.js';
+import db from '../database/dbSetup.js';
+import { User } from '../database/schema.js';
 const { expect } = chai;
 
-chai.use(chaiHttp);
+use(chaiHttp);
 
 describe('User Routes', () => {
   let token;
@@ -13,7 +14,7 @@ describe('User Routes', () => {
   before(async () => {
     await User.deleteMany({});
 
-    const res = await chai.request(app)
+    const res = await request(app)
       .post('/register')
       .send({
         username: 'testuser',
@@ -26,7 +27,7 @@ describe('User Routes', () => {
   });
 
   it('should fetch user profile', (done) => {
-    chai.request(app)
+    request(app)
       .get(`/users/${userId}`)
       .set('Authorization', `Bearer ${token}`)
       .end((err, res) => {
@@ -37,7 +38,7 @@ describe('User Routes', () => {
   });
 
   it('should update user profile', (done) => {
-    chai.request(app)
+    request(app)
       .put(`/users/${userId}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -51,7 +52,7 @@ describe('User Routes', () => {
   });
 
   it('should delete user profile', (done) => {
-    chai.request(app)
+    request(app)
       .delete(`/users/${userId}`)
       .set('Authorization', `Bearer ${token}`)
       .end((err, res) => {

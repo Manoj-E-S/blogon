@@ -13,7 +13,7 @@ const userSchema = new Schema({
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {
-  // Only hash the password if it has been modified (or is new)
+  // Only hash the password if it has been modified (or it is new)
   if (!this.isModified('password')) return next();
 
   const salt = await bcrypt.genSalt(10);
@@ -31,6 +31,8 @@ const blogSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
+
+blogSchema.index({ title: 'text', content: 'text', tags: 'text' });
 
 
 const categorySchema = new Schema({

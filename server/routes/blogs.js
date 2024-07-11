@@ -1,6 +1,6 @@
 const express = require('express');
 const blogRouter = express.Router();
-const { Blog } = require('../database/schema');
+const { Blog, Category } = require('../database/schema');
 const auth = require('../middleware/auth');
 
 // GET /blogs
@@ -23,6 +23,31 @@ blogRouter.get('/:id', async (req, res) => {
         res.send(blog);
     } catch (error) {
         res.status(500).send(error);
+    }
+});
+
+// GET /blogs/search?q=example
+blogRouter.get('/search', async (req, res) => {
+    const { query } = req.query;
+
+    try {
+        const regex = new RegExp(query, 'i');
+        const categories = await Category.find({ name: regex });
+
+        const categoryIds = categories.map(category => category._id);
+
+        const blogs = await Blog.find({
+            $or: [
+                { title: regex },
+                { content: regex },
+                { tags: regex },
+                { category: { $in: categoryIds } }
+            ]
+        });
+
+        res.send(blogs);
+    } catch (error) {
+        res.status(500).send({ error: 'Error fetching blogs' });
     }
 });
 
@@ -74,5 +99,6 @@ blogRouter.delete('/:id', auth, async (req, res) => {
         res.status(500).send(error);
     }
 });
+
 
 module.exports = blogRouter;
