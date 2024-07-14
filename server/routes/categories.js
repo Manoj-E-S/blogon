@@ -12,8 +12,8 @@ categoryRouter.get('/', async (req, res) => {
     }
 });
 
-// GET /categories/:id/posts [All blogs for a specific category]
-categoryRouter.get('/:id/posts', async (req, res) => {
+// GET /categories/:id/blogs [All blogs for a specific category]
+categoryRouter.get('/:id/blogs', async (req, res) => {
     try {
         const blogs = await Blog.find({ category: req.params.id });
         res.send(blogs);

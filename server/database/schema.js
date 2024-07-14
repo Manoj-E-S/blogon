@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require("bcrypt");
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -28,6 +29,7 @@ const blogSchema = new Schema({
   authorId: { type: Schema.Types.ObjectId, ref: 'User', required: true},
   tags: [String],
   category: { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+  coverImage: String,
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

@@ -26,7 +26,7 @@ function checkFileType(file, cb) {
 }
 
 
-const upload = multer({
+const profileUpload = multer({
     storage: storage,
     limits: { fileSize: 1000000 }, // 1MB
     fileFilter: function(req, file, cb) {
@@ -34,4 +34,4 @@ const upload = multer({
     }
 });
 
-module.exports = upload;
+module.exports = profileUpload;

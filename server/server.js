@@ -1,6 +1,7 @@
 const path = require('path');
 const bodyParser = require('body-parser');
 const express = require('express');
+const cors = require("cors")
 const dotenv = require('dotenv');
 const db = require('./database/dbSetup');
 
@@ -18,6 +19,7 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors())
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Routes
