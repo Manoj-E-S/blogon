@@ -1,0 +1,19 @@
+.Footer {
+    @apply text-center;
+    @apply flex;
+    @apply items-center;
+    @apply justify-center;
+    @apply w-full;
+}
+
+.logo {
+    font-family: 'Ostrich-Heavy', sans-serif;
+}
+
+.setflex-1 {
+    flex: 1;
+}
+
+.setflex-2 {
+    flex: 2;
+}

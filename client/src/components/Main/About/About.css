@@ -1,0 +1,22 @@
+.about {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: justify;
+}
+
+.content {
+    flex: 2;
+}
+
+.image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.image img{
+    object-fit: cover;
+}

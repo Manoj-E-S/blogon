@@ -1,0 +1,13 @@
+.blog-item {
+    cursor: pointer;
+}
+
+.blog-meta {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.author-details {
+    font-family: "Ostrich-Heavy";
+}

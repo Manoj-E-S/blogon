@@ -1,0 +1,25 @@
+.c-icon-sm {
+    padding-right: 0.5rem;
+}
+
+.c-icon {
+    padding-right: 1rem;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    @apply w-full;
+}
+
+.MainContainer {
+    min-height: 54.5vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20vh;
+}
