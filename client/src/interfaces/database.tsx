@@ -21,3 +21,9 @@ export interface Category {
     createdAt: string,
     updatedAt: string
 }
+
+export interface BlogResponse {
+    blogs: Blog[],
+    totalPages: number,
+    currentPage: number,
+}

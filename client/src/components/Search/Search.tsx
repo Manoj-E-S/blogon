@@ -7,14 +7,13 @@ import { Blog } from '../../interfaces/database'
 const API_SEARCH_blogs = "http://localhost:3454/blogs/search?q"
 
 type SearchProps = {
-    blogSetter: (data: Blog[]) => void
+    blogResponseSetter: (data: Blog[]) => void,
 }
 
-export default function Search({ blogSetter }: SearchProps) {
+export default function Search({ blogResponseSetter}: SearchProps) {
     const [query, setQuery] = useState<string>("");
 
-    const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const doSearch = async () => {
         try {
             const response = await fetch(`${API_SEARCH_blogs}=${query}`, {
                 method: "GET",
@@ -23,11 +22,11 @@ export default function Search({ blogSetter }: SearchProps) {
                 }
             });
 
-            const data: Blog[] = await response.json();
+            const data = await response.json();
             console.log(data);
 
             if(response.ok) {
-                blogSetter(data);
+                blogResponseSetter(data);
             } else {
                 console.error("Could not Search...")
             }
@@ -35,6 +34,11 @@ export default function Search({ blogSetter }: SearchProps) {
         } catch (ex) {
             console.error(ex);
         }
+    }
+
+    const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        doSearch();
     }
 
     return (

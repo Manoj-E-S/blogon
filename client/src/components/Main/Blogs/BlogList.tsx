@@ -14,6 +14,7 @@ const BlogList: React.FC = () => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
     const [totalPages, setTotalPages] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [pagination, setPagination] = useState<boolean>(true);
     
     const navigate = useNavigate();
     const { authorId } = useParams();
@@ -24,7 +25,7 @@ const BlogList: React.FC = () => {
         try {
             let response;
             if (authorId !== undefined) {
-                response = await fetch(`${API_URL}/author/${authorId}`, {
+                response = await fetch(`${API_URL}/author/${authorId}?page=${page}`, {
                     method: "GET",
                     headers: {
                         "Authorization": "Bearer " + `${localStorage.getItem("accessToken")}`,
@@ -63,8 +64,9 @@ const BlogList: React.FC = () => {
         navigate("/blogs/new", { replace: true })
     };
     
-    const blogSetter = (blogs: Blog[]) => {
+    const blogResponseSetter = (blogs: Blog[]) => {
         setBlogs(blogs);
+        setPagination(false);
     }
     
     if(!blogs) {
@@ -74,7 +76,7 @@ const BlogList: React.FC = () => {
     return (
         <div className="w-full px-20">
             {(authorId === undefined) && (
-                <Search blogSetter={blogSetter}/>
+                <Search blogResponseSetter={blogResponseSetter} />
             )}
             <div className="flex flex-col md:flex-row justify-between">
                 <h1 className="charmonman-bold">Blogs</h1>
@@ -102,18 +104,20 @@ const BlogList: React.FC = () => {
                             />
                         ))}
                     </div>
-                    <div className="pagination flex flex-row justify-end">
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <button
-                                className={`bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 max-w-20 mx-2 rounded focus:outline-none focus:shadow-outline`}
-                                key={index}
-                                onClick={() => handlePageChange(index + 1)}
-                                disabled={currentPage === index + 1}
-                            >
-                                {index + 1}
-                            </button>
-                        ))}
-                    </div>
+                    {(pagination) && (
+                        <div className="pagination flex flex-row justify-end">
+                            {Array.from({ length: totalPages }, (_, index) => (
+                                <button
+                                    className={`bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 max-w-20 mx-2 rounded focus:outline-none focus:shadow-outline`}
+                                    key={index}
+                                    onClick={() => handlePageChange(index + 1)}
+                                    disabled={currentPage === index + 1}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </>
             )}
 
