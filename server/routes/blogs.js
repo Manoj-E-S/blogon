@@ -8,7 +8,7 @@ const blogUpload = require("../middleware/blogUploadCofig")
 const blogRouter = express.Router();
 
 
-// GET /blogs
+// GET /blogs?page=1&limit=5
 blogRouter.get('/', async (req, res) => {
     const { page = 1, limit = 5 } = req.query;
     try {
@@ -61,7 +61,7 @@ blogRouter.get('/search', async (req, res) => {
 });
 
 
-// GET /blogs/search?q=example
+// GET /blogs/author/:id?page=1&limit=5
 blogRouter.get('/author/:id', auth, async (req, res) => {    
     try {
         if (req.user._id !== req.params.id) {
@@ -69,14 +69,17 @@ blogRouter.get('/author/:id', auth, async (req, res) => {
         }
         
         const { page = 1, limit = 5 } = req.query;
+        const allBlogsByAuthor = await Blog.find({ authorId: req.params.id})
+            .populate('authorId', 'username profileImage')
+            .exec();
+
         const blogs = await Blog.find({ authorId: req.params.id})
             .populate('authorId', 'username profileImage')
             .limit(limit * 1)
             .skip((page - 1) * limit)
             .exec();
 
-        // const count = await Blog.countDocuments();
-        const count = blogs.length;
+        const count = allBlogsByAuthor.length;
 
         console.log(blogs);
         res.json({
