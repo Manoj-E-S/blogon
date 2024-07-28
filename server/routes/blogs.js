@@ -8,9 +8,9 @@ const blogUpload = require("../middleware/blogUploadCofig")
 const blogRouter = express.Router();
 
 
-// GET /blogs?page=1&limit=5
+// GET /blogs?page=1&limit=10
 blogRouter.get('/', async (req, res) => {
-    const { page = 1, limit = 5 } = req.query;
+    const { page = 1, limit = 10 } = req.query;
     try {
         const blogs = await Blog.find()
             .populate('authorId', 'username profileImage')
@@ -36,7 +36,7 @@ blogRouter.get('/search', async (req, res) => {
     console.log(query);
 
     try {
-        const regex = new RegExp(query, 'i');
+        const regex = new RegExp(`\\b${query}\\b`, 'i');
         const categories = await Category.find({ name: regex });
 
         const categoryIds = categories.map(category => category._id);
@@ -61,14 +61,14 @@ blogRouter.get('/search', async (req, res) => {
 });
 
 
-// GET /blogs/author/:id?page=1&limit=5
+// GET /blogs/author/:id?page=1&limit=10
 blogRouter.get('/author/:id', auth, async (req, res) => {    
     try {
         if (req.user._id !== req.params.id) {
             return res.status(401).send({ error: "Access Denied"})
         }
         
-        const { page = 1, limit = 5 } = req.query;
+        const { page = 1, limit = 10 } = req.query;
         const allBlogsByAuthor = await Blog.find({ authorId: req.params.id})
             .populate('authorId', 'username profileImage')
             .exec();
