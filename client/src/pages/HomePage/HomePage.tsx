@@ -15,6 +15,12 @@ type HomePageProps = {
 }
 
 function HomePage({ whichMain }: HomePageProps) {
+
+  if(localStorage.getItem("loggedIn") === "true") {      
+    setTimeout(() => {
+      localStorage.clear();
+    }, 3600000);
+  }
   
   return (
     <>

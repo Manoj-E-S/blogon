@@ -28,7 +28,7 @@ const BlogDetail = () => {
     const paras: string[] = blog.content.split("\n");
 
     return (
-        <div>
+        <div className="w-full">
             {blog.coverImage && (
                 <div className="w-full h-[25rem] -mt-28 mb-10">
                     <img

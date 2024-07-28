@@ -31,12 +31,14 @@ export default function Login() {
 
             const { token, profileImageUrl, username, userId } = data;
             console.log(data);
+
             localStorage.setItem("accessToken", token);
             localStorage.setItem("profileImageUrl", profileImageUrl);
             localStorage.setItem("username", username);
             localStorage.setItem("email", email);
             localStorage.setItem("userId", userId);
             localStorage.setItem("loggedIn", "true");
+
             navigate("/blogs", { replace: true })
         } catch (error) {
             if (error instanceof Error) {

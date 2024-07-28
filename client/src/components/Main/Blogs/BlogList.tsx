@@ -91,7 +91,7 @@ const BlogList: React.FC = () => {
             )}
 
             {blogs.length === 0 ? (
-                <p>No blogs to display yet</p>
+                <p>No blogs to display</p>
             ) : (
                 <>
                     <div className="">
